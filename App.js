@@ -1,40 +1,92 @@
-// import * as React from 'react';
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator }     from '@react-navigation/drawer';
+import { TouchableOpacity, Text }    from 'react-native';
 
-import HomeScreen from './screens/HomeScreen';
-import ProductsList from '/screens/ProductsList';
+import HomeScreen     from './screens/HomeScreen';
+import ShopScreen     from './screens/ShopScreen';
 import ProductDetails from './screens/ProductDetails';
-import EmployeesList from './screens/EmployeesList';
-import EmployeeDetails from './screens/EmployeeDetails';
-import OrdersList from './screens/OrdersList';
-import OrderDetails from './screens/OrderDetails';
+import CartScreen     from './screens/CartScreen';
+import ProfileScreen  from './screens/ProfileScreen';
+import AboutScreen    from './screens/AboutScreen';
+import WishlistScreen from './screens/WishlistScreen';
 
-const Stack = createNativeStackNavigator();
+const Stack  = createNativeStackNavigator();
+const Tab    = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 
+// Inner Stack: Shop list + Product Details
+function ShopStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name='ShopList'
+        component={ShopScreen}
+        options={({ navigation }) => ({
+          title: 'Shop',
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+              <Text style={{ marginRight: 10, fontSize: 22 }}>🛒</Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name='ProductDetails'
+        component={ProductDetails}
+        options={({ route, navigation }) => ({
+          title: route.params.item.name,
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+              <Text style={{ marginRight: 10, fontSize: 22 }}>🛒</Text>
+            </TouchableOpacity>
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// Tab Navigator: Home | Shop | Cart | Profile
+function TabNavigator() {
+  return (
+    <Tab.Navigator
+      screenOptions={{ headerShown: false,
+        tabBarStyle: { backgroundColor: '#1F4E79' },
+        tabBarActiveTintColor: '#fff',
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.5)' }}
+    >
+      <Tab.Screen name='Home'    component={HomeScreen}
+        options={{ tabBarLabel: 'Home', tabBarIcon: () => <Text>🏠</Text> }} />
+      <Tab.Screen name='Shop'    component={ShopStack}
+        options={{ tabBarLabel: 'Shop', tabBarIcon: () => <Text>🛍️</Text> }} />
+      <Tab.Screen name='Cart'    component={CartScreen}
+        options={{ tabBarLabel: 'Cart', tabBarIcon: () => <Text>🛒</Text> }} />
+      <Tab.Screen name='Profile' component={ProfileScreen}
+        options={{ tabBarLabel: 'Profile', tabBarIcon: () => <Text>👤</Text> }} />
+    </Tab.Navigator>
+  );
+}
+
+// Drawer Navigator wraps Tabs + extra screens
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
-        {/* Home Screen: header hidden */}
-        <Stack.Screen
-          name='Home'
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name='ProductsList' component={ProductsList}
-          options={{ title: 'Products' }} />
-        <Stack.Screen name='ProductDetails' component={ProductDetails}
-          options={({ route }) => ({ title: route.params.product.name })} />
-        <Stack.Screen name='EmployeesList' component={EmployeesList}
-          options={{ title: 'Employees' }} />
-        <Stack.Screen name='EmployeeDetails' component={EmployeeDetails}
-          options={({ route }) => ({ title: route.params.employee.name })} />
-        <Stack.Screen name='OrdersList' component={OrdersList}
-          options={{ title: 'Orders' }} />
-        <Stack.Screen name='OrderDetails' component={OrderDetails}
-          options={({ route }) => ({ title: `Order #${route.params.order.id}` })} />
-      </Stack.Navigator>
+      <Drawer.Navigator
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: { backgroundColor: '#F0F4F8' },
+          drawerActiveTintColor: '#2E75B6',
+          drawerInactiveTintColor: '#555',
+        }}
+      >
+        <Drawer.Screen name='Main'     component={TabNavigator}
+          options={{ title: 'Home' }} />
+        <Drawer.Screen name='Wishlist' component={WishlistScreen} />
+        <Drawer.Screen name='About'    component={AboutScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
