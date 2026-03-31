@@ -1,21 +1,33 @@
-import React from "react";
-import { SafeAreaViewBase } from "react-native";
-import {
-  View,
-  Text,
-  SafeAreaView,
-} from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, useColorScheme } from 'react-native';
 
-function App () {
-  return(
-    <SafeAreaView>
-      <View>
-        <Text>Hello World!</Text>
-        <Text>Hello World!</Text>
-        <Text>Hello World!</Text>
-      </View>
-      </SafeAreaView>
-  )
+export default function App() {
+  const theme = useColorScheme(); // 'dark' or 'light'
+
+  const isDark = theme === 'dark';
+
+  return (
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: isDark ? '#000' : '#fff' }
+      ]}
+    >
+      <Text style={[styles.text, { color: isDark ? '#fff' : '#000' }]}>
+        Hello
+      </Text>
+    </View>
+  );
 }
 
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',      // horizontal center
+    justifyContent: 'center',  // vertical center
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
