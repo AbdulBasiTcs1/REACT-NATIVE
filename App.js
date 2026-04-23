@@ -1,33 +1,23 @@
-import React from 'react';
-import { View, Text, StyleSheet, useColorScheme } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList } from 'react-native';
 
-export default function App() {
-  const theme = useColorScheme(); // 'dark' or 'light'
+const App = () => {
+  const [data, setData] = useState([]);
 
-  const isDark = theme === 'dark';
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(res => res.json())
+      .then(json => setData(json))
+      .catch(err => console.log(err));
+  }, []);
 
   return (
-    <View
-      style={[
-        styles.container,
-        { backgroundColor: isDark ? '#000' : '#fff' }
-      ]}
-    >
-      <Text style={[styles.text, { color: isDark ? '#fff' : '#000' }]}>
-        Hello
-      </Text>
-    </View>
+    <FlatList
+      data={data}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => <Text>{item.title}</Text>}
+    />
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',      // horizontal center
-    justifyContent: 'center',  // vertical center
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-});
+export default App;
