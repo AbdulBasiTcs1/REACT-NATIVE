@@ -3,9 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Home from './screens/Home';
-import GetAPI from './screens/GetAPI';
-import PostAPI from './screens/PostAPI';
+import Home from './Screens/Home';
+import GetAPI from './Screens/GetAPI';
+import PostAPI from './Screens/PostAPI';
 
 const Stack= createNativeStackNavigator();
 export default function App() {

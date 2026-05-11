@@ -1,0 +1,37 @@
+{
+  "users2": [
+    {
+      "id": "1",
+      "title": "kamran"
+    },
+    {
+      "id": "2",
+      "title": "waqas"
+    },
+    {
+      "id": "3333",
+      "title": "titles33333"
+    },
+    {
+      "id": "77",
+      "title": "numan"
+    },
+    {
+      "id": "77",
+      "title": "numan"
+    },
+    {
+      "id": "1645",
+      "title": "Waseem"
+    },
+    {
+      "id": "cKUMgu-fkek",
+      "title": "abdul"
+    },
+    {
+      "id": "lI_eEw90V0w",
+      "title": "abdul"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
